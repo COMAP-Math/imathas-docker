@@ -1,0 +1,47 @@
+{
+	"name": "imathas.comap.org",
+	"dockerComposeFile": [
+		"docker-compose.yml"
+	],
+	"service": "vscode",
+	"workspaceFolder": "/workspace/",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"aaron-bond.better-comments",
+				"ms-vscode-remote.remote-containers",
+				"shardulm94.trailing-spaces",
+				"iciclesoft.workspacesort",
+				"redhat.vscode-yaml",
+				"mohsen1.prettify-json",
+				"yzhang.markdown-all-in-one",
+				"ms-python.vscode-pylance",
+				"GitHub.copilot",
+				"felixfbecker.php-intellisense",
+				"bmewburn.vscode-intelephense-client",
+				"xdebug.php-debug",
+				"GitLab.gitlab-workflow",
+				"xdebug.php-pack",
+				"zobo.php-intellisense",
+				"ms-azuretools.vscode-docker",
+				"ms-vscode.makefile-tools"
+			],
+			"settings": {
+				"dotenv": "true",
+				"dotenvFile": "./.devcontainer/.env",
+				"remote.containers.logLevel": "debug",
+				"terminal.integrated.wordWrap": "off",
+				"php.validate.enable": true,
+				"intelephense.diagnostics.enable": true,
+			}
+		}
+	},
+	"forwardPorts": [
+		80,
+		443,
+		3306
+	],
+	"remoteUser": "vscode",
+        "postCreateCommand": "./.devcontainer/postCreateCommand.sh"
+
+}
