@@ -1,14 +1,72 @@
-# https://docs.docker.com/compose/
-# https://docs.docker.com/compose/compose-file/
-
-version: '3'
-
+---
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: imathas-mysql
+    hostname: db
+    domainname: dev.contest.comap.com
+    privileged: false
+    stdin_open: false
+    tty: false
+    restart: unless-stopped
+    expose:
+      - 3306
+    ports:
+      - "3306:3306"
+    volumes:
+      - /opt/docker/imathas/mysql-data:/var/lib/mysql
+      - /opt/docker/imathas/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    command:
+      [
+        "--general-log=0",
+        "--slow-query-log=1",
+        "--log-queries-not-using-indexes=1",
+        "--long-query-time=10",
+        "--max_allowed_packet=256M",
+        "--net_read_timeout=600",
+        "--net_write_timeout=600",
+        "--wait_timeout=28800",
+        "--interactive_timeout=28800",
+      ]
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+      - MYSQL_USER="imathas"
+      - MYSQL_PASSWORD="imathas"
+      - MYSQL_DATABASE="imathasdb"
+      - TZ=${TZ:-America/New_York}
+    networks:
+      - imathas
+
+  certbot:
+    container_name: imathas-certbot
+    build:
+      context: ./docker/certbot
+      dockerfile: Dockerfile
+    environment:
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+      - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
+    #   - CERTBOT_DJANGO_HOST=${CERTBOT_DJANGO_HOST}
+    #   - CERTBOT_DJANGO_PORT=${CERTBOT_DJANGO_PORT}
+    depends_on:
+      - app
+    volumes:
+      - /opt/docker/imathas/letsencrypt:/etc/letsencrypt
+      - /opt/docker/imathas/letsencrypt/logs:/var/log/letsencrypt
+    restart: "no"
+    networks:
+      - imathas
 
   app:
+    container_name: imathas-app
+    hostname: www
+    domainname: dev.comap.com
+    privileged: true
+    stdin_open: false
+    tty: false
+    restart: unless-stopped
     build:
       context: ./
-      dockerfile: docker/Dockerfile
+      dockerfile: ./docker/app/Dockerfile
     expose:
       - 80
       - 443
@@ -18,48 +76,19 @@ services:
       - "443:443"
       - "80:80"
       - "8080:8080"
-    links:
-      - db
-    volumes:
-      - "/c/Users/David/Documents/IMathAS:/var/www/html"
-      - "./docker/ssl:/etc/ssl/certs"
-      - "./docker/ssl:/etc/ssl/private"
-
-    hostname: www
-    domainname: imathas.com
-
-    restart: unless-stopped
-    privileged: true
-    stdin_open: false
-    tty: false
-
     environment:
-      DB_SERVER: "db"
-      DB_NAME: "imathasdb"
-      DB_USERNAME: "imathas"
-      DB_PASSWORD: "imathas"
-      CONFIG_ENV: "development"
-
-  db:
-    image: mysql:5.7
-    expose:
-      - 3306
-    ports:
-      - "127.0.0.1:3305:3306"
+      - DB_SERVER="db"
+      - DB_NAME="imathasdb"
+      - DB_USERNAME="imathas"
+      - DB_PASSWORD="imathas"
+      - CONFIG_ENV="development"
     volumes:
-      - "$HOME/docker-data/mysql-imathas:/var/lib/mysql"
+      - /opt/docker/imathas/IMathAS:/var/www/html
+      - /opt/docker/imathas/letsencrypt:/etc/letsencrypt
+      - /opt/docker/imathas/letsencrypt/logs:/var/log/letsencrypt
+    networks:
+      - imathas
 
-    hostname: db
-    domainname: imathas.com
-
-    restart: unless-stopped
-    privileged: false
-    stdin_open: false
-    tty: false
-
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_USER: "imathas"
-      MYSQL_PASSWORD: "imathas"
-      MYSQL_DATABASE: "imathasdb"
-
+networks:
+  imathas:
+    driver: bridge

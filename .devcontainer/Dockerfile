@@ -30,8 +30,10 @@ RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes \
     sudo \
     php \
     php-cli \
+    vim-tiny \
     && apt-get autoremove \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USERNAME && \
     (getent group $USER_GID || groupadd --gid $USER_GID $USERNAME) && \

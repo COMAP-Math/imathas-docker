@@ -71,6 +71,8 @@
 .webassets-cache
 /site
 ENV/
+IMathAS
+IMathAS/
 MANIFEST
 Thumbs.db
 __pycache__/
@@ -105,6 +107,8 @@ local_settings.py
 lost+found/
 mock_CDN/
 my_CDN
+mysql-data
+mysql-data/
 nosetests.xml
 parts/
 pip-delete-this-directory.txt
@@ -121,5 +125,3 @@ venv.bak/
 venv/
 wheels/
 zzz.diff
-IMathAS
-IMathAS/

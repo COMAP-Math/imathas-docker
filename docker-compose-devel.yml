@@ -1,0 +1,30 @@
+---
+services:
+  mysql:
+    domainname: dev.local
+    volumes:
+      - ./.devcontainer//mysql-data:/var/lib/mysql
+      - ./.devcontainer/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    networks:
+      - imathas
+
+  certbot:
+    domainname: dev.local
+    volumes:
+      - ./.devcontainer/letsencrypt:/etc/letsencrypt
+      - ./.devcontainer/letsencrypt/logs:/var/log/letsencrypt
+    networks:
+      - imathas
+
+  app:
+    domainname: dev.local
+    volumes:
+      - ./IMathAS:/var/www/html
+      - ./.devcontainer/letsencrypt:/etc/letsencrypt
+      - ./.devcontainer/letsencrypt/logs:/var/log/letsencrypt
+    networks:
+      - imathas
+
+networks:
+  imathas:
+    driver: bridge
