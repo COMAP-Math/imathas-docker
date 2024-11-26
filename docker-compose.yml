@@ -29,11 +29,11 @@ services:
         "--interactive_timeout=28800",
       ]
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
-      - MYSQL_USER="imathas"
-      - MYSQL_PASSWORD="imathas"
-      - MYSQL_DATABASE="imathasdb"
-      - TZ=${TZ:-America/New_York}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=${MYSQL_ALLOW_EMPTY_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - TZ=${TZ}
     networks:
       - imathas
 
@@ -77,11 +77,11 @@ services:
       - "80:80"
       - "8080:8080"
     environment:
-      - DB_SERVER="db"
-      - DB_NAME="imathasdb"
-      - DB_USERNAME="imathas"
-      - DB_PASSWORD="imathas"
-      - CONFIG_ENV="development"
+      - DB_SERVER="${DB_SERVER}"
+      - DB_NAME="${DB_NAME}"
+      - DB_USERNAME="#{DB_USERNAME}"
+      - DB_PASSWORD="${DB_PASSWORD}"
+      - CONFIG_ENV="${CONFIG_ENV}"
     volumes:
       - /opt/docker/imathas/IMathAS:/var/www/html
       - /opt/docker/imathas/letsencrypt:/etc/letsencrypt

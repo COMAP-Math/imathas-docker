@@ -1,0 +1,6 @@
+!letsencrypt/logs
+!letsencrypt/logs/.gitkeep
+letsencrypt/*
+letsencrypt/logs/*
+mysql-data
+mysql-data/
