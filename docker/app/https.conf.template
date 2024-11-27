@@ -1,8 +1,8 @@
 # ssl=course.comap.org.conf
 
 <VirtualHost *:80>
-  ServerName course.comap.org
-  ServerAdmin webmaster@comap.org
+  ServerName ${APACHE_SERVER_NAME}
+  ServerAdmin ${APACHE_SERVER_ADMIN}
 
   DocumentRoot /var/www/html
 
@@ -17,15 +17,15 @@
 </VirtualHost>
 
 <VirtualHost _default_:443>
-  ServerName course.comap.org
-  ServerAdmin webmaster@comap.org
+  ServerName ${APACHE_SERVER_NAME}
+  ServerAdmin ${APACHE_SERVER_ADMIN}
 
   SSLEngine on
   SSLProxyEngine On
-  SSLCertificateFile /etc/letsencrypt/live/course.comap.org/cert.pem
-  SSLCertificateKeyFile /etc/letsencrypt/live/course.comap.org/privkey.pem
-  SSLCertificateChainFile /etc/letsencrypt/live/course.comap.org/fullchain.pem
-  SSLOpenSSLConfCmd DHParameters /etc/ssl/certs/ssl-dhparams.pem
+  SSLCertificateFile /etc/letsencrypt/live/${CERTBOT_DOMAIN}/cert.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/${CERTBOT_DOMAIN}/privkey.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/${CERTBOT_DOMAIN}/fullchain.pem
+  SSLOpenSSLConfCmd DHParameters /etc/letsencrypt/ssl-dhparams.pem
 
   DocumentRoot /var/www/html
 

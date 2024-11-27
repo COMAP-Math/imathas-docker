@@ -1,4 +1,4 @@
-# course.comap.org.conf
+# http.conf
 
 <VirtualHost *:80>
   ServerName ${APACHE_SERVER_NAME}

@@ -3,7 +3,7 @@
 set -e
 
 LETSENCRYPT_DIR=/etc/letsencrypt
-SSL_DIR=/etc/ssl/certs
+SSL_DIR=/etc/letsencrypt
 
 ssl() {
     if [ ! -d $LETSENCRYPT_DIR ]; then
@@ -50,21 +50,24 @@ development() {
 
 staging() {
     ssl
-    
-    FILENAME=course.comap.org.conf
+
     AVAIL_DIR=${APACHE_CONFDIR}/sites-available
-    TEMPLATE=${AVAIL_DIR}/${FILENAME}.template
-    CONF=${AVAIL}/${FILENAME}
+
+    HTTP_CONF=http.conf
+    HTTPS_CONF=https.conf
 
     echo "==> Staging: Checking for ${CERTBOT_DOMAIN}/fullchain.pem"
     if [ ! -f "${LETSENCRYPT_DIR}/${CERT_DOMAIN}/fullchain.pem" ]; then
+        TEMPLATE=${AVAIL_DIR}/${HTTP_CONF}.template
+        CONF=${AVAIL_DIR}/${HTTP_CONF}
         echo "==> No SSL certificate, enabling HTTP only"
-        envsubst < $TEMPLATE > CONF
     else
+        TEMPLATE=${AVAIL_DIR}/${HTTP_CONF}.template
+        CONF=${AVAIL_DIR}/${HTTP_CONF}
         echo "==> SSL certificate found, enabling HTTPS"
-        envsubst < /etc/nginx/default-ssl.conf.template > /etc/nginx/conf.d/default.conf
     fi
-    
+
+    envsubst < $TEMPLATE > $CONF
     a2ensite ${FILENAME%.conf}
 }
 
@@ -103,7 +106,6 @@ echo "==> Found /usr/sbin/a2ensite"
 # Avoid replacing these with envsubst
 export host=\$host
 export request_uri=\$request_uri
-env
 
 if [ -z $APACHE_SERVER_NAME ]; then
         echo "==> Warning: APACHE_SERVER_NAME variable is null"
@@ -113,10 +115,6 @@ echo "==> APACHE_SERVER_NAME ${APACHE_SERVER_NAME} is set"
 
 
 case $APACHE_SERVER_NAME in
-    "dev.7818627878.com")
-        echo "==> development environment"
-        development
-        ;;
     "course.comap.org")
         echo "==> staging environment"
         staging
