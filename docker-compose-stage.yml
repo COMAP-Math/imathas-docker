@@ -2,6 +2,7 @@
 services:
   mysql:
     container_name: stage-mysql-imathas
+    image: mysql:8.0.33
     domainname: comap.org
     volumes:
       - ./.devcontainer//mysql-data:/var/lib/mysql

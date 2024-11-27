@@ -2,8 +2,8 @@
 
 set -e
 
-LETSENCRYPT_DIR=/etc/letsencrypt/live/course.comap.org/
-SSL_DIR=/etc/ssl/certs/
+LETSENCRYPT_DIR=/etc/letsencrypt
+SSL_DIR=/etc/ssl/certs
 
 ssl() {
     if [ ! -d $LETSENCRYPT_DIR ]; then
@@ -31,7 +31,7 @@ ssl() {
     echo "==> Checking for dhparams.pem"
     if [ ! -f "${SSL_DIR}/ssl-dhparams.pem" ]; then
         echo "==> Generating dhparams.pem"
-        openssl dhparam -out /vol/proxy/ssl-dhparams.pem 2048
+        openssl dhparam -out ${SSL_DIR}/sl-dhparams.pem 2048
     fi
 }
 
@@ -50,15 +50,22 @@ development() {
 
 staging() {
     ssl
+    
+    FILENAME=course.comap.org.conf
+    AVAIL_DIR=${APACHE_CONFDIR}/sites-available
+    TEMPLATE=${AVAIL_DIR}/${FILENAME}.template
+    CONF=${AVAIL}/${FILENAME}
 
-    echo "==> Staging: Checking for www.${DOMAIN}/fullchain.pem"
-    if [ ! -f "${LETSENCRYPT_DIR}/www.${DOMAIN}/fullchain.pem" ]; then
+    echo "==> Staging: Checking for ${CERTBOT_DOMAIN}/fullchain.pem"
+    if [ ! -f "${LETSENCRYPT_DIR}/${CERT_DOMAIN}/fullchain.pem" ]; then
         echo "==> No SSL certificate, enabling HTTP only"
-        envsubst < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf
+        envsubst < $TEMPLATE > CONF
     else
         echo "==> SSL certificate found, enabling HTTPS"
         envsubst < /etc/nginx/default-ssl.conf.template > /etc/nginx/conf.d/default.conf
     fi
+    
+    a2ensite ${FILENAME%.conf}
 }
 
 production() {
@@ -87,6 +94,12 @@ if [ ! -x /usr/bin/envsubst ]; then
 fi
 echo "==> Found /usr/bin/envsubst"
 
+if [ ! -x /usr/sbin/a2ensite ]; then
+    echo "==> Error: Cannot find a2ensite! Aborting."
+    exit 1
+fi
+echo "==> Found /usr/sbin/a2ensite"
+
 # Avoid replacing these with envsubst
 export host=\$host
 export request_uri=\$request_uri
@@ -104,7 +117,7 @@ case $APACHE_SERVER_NAME in
         echo "==> development environment"
         development
         ;;
-    "stage.7818627878.com")
+    "course.comap.org")
         echo "==> staging environment"
         staging
         ;;

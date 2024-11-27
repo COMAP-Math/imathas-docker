@@ -11,8 +11,8 @@ services:
     restart: unless-stopped
     expose:
       - 3306
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     volumes:
       - /opt/docker/imathas/mysql-data:/var/lib/mysql
       - /opt/docker/imathas/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
@@ -72,10 +72,10 @@ services:
       - 443
       - 8080
       - 9000
-    ports:
-      - "443:443"
-      - "80:80"
-      - "8080:8080"
+#    ports:
+#      - "443:443"
+#      - "80:80"
+#      - "8080:8080"
     environment:
       - DB_SERVER="${DB_SERVER}"
       - DB_NAME="${DB_NAME}"
@@ -85,6 +85,8 @@ services:
       - APACHE_SERVER_NAME=${APACHE_SERVER_NAME}
       - APACHE_SERVER_ADMIN=${APACHE_SERVER_ADMIN}
       - TZ=${TZ}
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+      - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
     volumes:
       - /opt/docker/imathas/IMathAS:/var/www/html
       - /opt/docker/imathas/letsencrypt:/etc/letsencrypt

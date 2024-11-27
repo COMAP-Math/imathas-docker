@@ -1,7 +1,7 @@
 # course.comap.org.conf
 
 <VirtualHost *:80>
-  ServerName course.comap.org
+  ServerName ${APACHE_SERVER_NAME}
   ServerAdmin ${APACHE_SERVER_ADMIN}
 
   DocumentRoot /var/www/html
