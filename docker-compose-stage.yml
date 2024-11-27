@@ -1,7 +1,7 @@
 ---
 services:
   mysql:
-    container_name: stage-mysql
+    container_name: stage-mysql-imathas
     domainname: comap.org
     volumes:
       - ./.devcontainer//mysql-data:/var/lib/mysql
@@ -10,7 +10,7 @@ services:
       - imathas
 
   certbot:
-    container_name: stage-certbot
+    container_name: stage-certbot-imathas
     domainname: comap.org
     restart: "no"
     volumes:
@@ -20,11 +20,14 @@ services:
       - imathas
 
   app:
-    container_name: stage-app
+    container_name: stage-app-imathas
     domainname: comap.org
     volumes:
       - ./IMathAS:/var/www/html
       - ./.devcontainer/letsencrypt:/etc/letsencrypt
       - ./.devcontainer/letsencrypt/logs:/var/log/letsencrypt
+    ports:
+      - "8084:80"
+      - "4447:443"
     networks:
       - imathas
