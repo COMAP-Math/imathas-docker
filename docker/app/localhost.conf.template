@@ -1,0 +1,14 @@
+# course.comap.org.conf
+
+<VirtualHost *:80>
+  ServerName localhost
+  ServerAdmin ${APACHE_SERVER_ADMIN}
+
+  DocumentRoot /var/www/html
+
+  LogLevel warn
+  SetEnvIf X-Forwarded-For "^.*\..*\..*\..*" forwarded
+
+  ErrorLogFormat "[%t] [%l] [pid %P] %F: %E: [client %{X-Forwarded-For}i] %M"
+  ErrorLog /var/log/apache2/error.log
+</VirtualHost>

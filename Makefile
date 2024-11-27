@@ -1,5 +1,6 @@
 # Load environment variables from .env file
 include .env
+export
 
 # Docker Compose files for environments
 DOCKER_COMPOSE_DEVEL = -f docker-compose.yml -f docker-compose-devel.yml
@@ -8,6 +9,7 @@ DOCKER_COMPOSE_PROD = -f docker-compose.yml
 
 # Helper commands
 DOCKER_COMPOSE = docker-compose
+BUILD_ARGS = --build-arg APACHE_SERVER_NAME=$(APACHE_SERVER_NAME) --build-arg TZ=$(TZ) --build-arg APACHE_SERVER_ADMIN=$(APACHE_SERVER_ADMIN)
 DOCKER_IMAGE_PRUNE = docker image prune -af || true
 DOCKER_STOP = docker-compose $(COMPOSE_FILES) stop > /dev/null 2>&1 || true
 DOCKER_UP = docker-compose $(COMPOSE_FILES) up -d
@@ -22,7 +24,7 @@ endef
 .PHONY: build-devel
 build-devel:
 	$(eval $(call DOCKER_COMPOSE_ENV,$(DOCKER_COMPOSE_DEVEL)))
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_DEVEL) build
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_DEVEL) build $(BUILD_ARGS)
 
 .PHONY: run-devel
 run-devel:
@@ -39,7 +41,7 @@ devel: build-devel run-devel
 .PHONY: build-staging
 build-staging:
 	$(eval $(call DOCKER_COMPOSE_ENV,$(DOCKER_COMPOSE_STAGE)))
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_STAGE) build --no-cache
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_STAGE) build --no-cache $(BUILD_ARGS)
 
 .PHONY: run-staging
 run-staging:
@@ -64,7 +66,7 @@ ssl-production:
 .PHONY: build-production
 build-production:
 	$(eval $(call DOCKER_COMPOSE_ENV,$(DOCKER_COMPOSE_PROD)))
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_PROD) build --no-cache
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_PROD) build --no-cache $(BUILD_ARGS)
 
 .PHONY: run-production
 run-production:

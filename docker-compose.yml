@@ -82,6 +82,9 @@ services:
       - DB_USERNAME="#{DB_USERNAME}"
       - DB_PASSWORD="${DB_PASSWORD}"
       - CONFIG_ENV="${CONFIG_ENV}"
+      - APACHE_SERVER_NAME=${APACHE_SERVER_NAME}
+      - APACHE_SERVER_ADMIN=${APACHE_SERVER_ADMIN}
+      - TZ=${TZ}
     volumes:
       - /opt/docker/imathas/IMathAS:/var/www/html
       - /opt/docker/imathas/letsencrypt:/etc/letsencrypt

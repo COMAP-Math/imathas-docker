@@ -2,7 +2,7 @@
 services:
   mysql:
     container_name: stage-mysql
-    domainname: dev.local
+    domainname: comap.org
     volumes:
       - ./.devcontainer//mysql-data:/var/lib/mysql
       - ./.devcontainer/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
@@ -11,7 +11,7 @@ services:
 
   certbot:
     container_name: stage-certbot
-    domainname: dev.local
+    domainname: comap.org
     restart: "no"
     volumes:
       - ./.devcontainer/letsencrypt:/etc/letsencrypt
@@ -21,7 +21,7 @@ services:
 
   app:
     container_name: stage-app
-    domainname: dev.local
+    domainname: comap.org
     volumes:
       - ./IMathAS:/var/www/html
       - ./.devcontainer/letsencrypt:/etc/letsencrypt
