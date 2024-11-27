@@ -1,10 +1,10 @@
 ---
 services:
   mysql:
-    image: mysql:8.0
-    container_name: imathas-mysql
-    hostname: db
-    domainname: dev.contest.comap.com
+    container_name: production-mysql
+    image: mysql:lts
+    hostname: course-db
+    domainname: comap.org
     privileged: false
     stdin_open: false
     tty: false
@@ -38,7 +38,7 @@ services:
       - imathas
 
   certbot:
-    container_name: imathas-certbot
+    container_name: producion-certbot
     build:
       context: ./docker/certbot
       dockerfile: Dockerfile
@@ -57,9 +57,9 @@ services:
       - imathas
 
   app:
-    container_name: imathas-app
-    hostname: www
-    domainname: dev.comap.com
+    container_name: production-app
+    hostname: course
+    domainname: comap.org
     privileged: true
     stdin_open: false
     tty: false

@@ -14,10 +14,9 @@ if [ -z "$CERTBOT_EMAIL" ]; then
     exit 1
 fi
 
-DOMAIN="judging-portal.${CERTBOT_DOMAIN}"
 
-until nc -z proxy 80; do
-    echo "==> Waiting for proxy to start"
+until nc -z app 80; do
+    echo "==> Waiting for app to start"
     sleep 1s & wait ${!}
 done
 
@@ -25,9 +24,7 @@ echo "==> Getting certificate for ${CERTBOT_DOMAIN}"
 
 certbot --verbose certonly \
     --webroot \
-    --webroot-path "/vol/www/" \
-    --domain judging-portal.${CERTBOT_DOMAIN} \
-    --domain www.${CERTBOT_DOMAIN} \
+    --webroot-path "/var/www/html/" \
     --domain ${CERTBOT_DOMAIN} \
     --email ${CERTBOT_EMAIL} \
     --rsa-key-size 4096 \

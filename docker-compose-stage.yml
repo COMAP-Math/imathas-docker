@@ -1,7 +1,7 @@
 ---
 services:
   mysql:
-    container_name: devel-mysql
+    container_name: stage-mysql
     domainname: dev.local
     volumes:
       - ./.devcontainer//mysql-data:/var/lib/mysql
@@ -10,9 +10,7 @@ services:
       - imathas
 
   certbot:
-    container_name: devel-certbot
-    command: /bin/true
-    entrypoint: ["/bin/true"]
+    container_name: stage-certbot
     domainname: dev.local
     restart: "no"
     volumes:
@@ -22,7 +20,7 @@ services:
       - imathas
 
   app:
-    container_name: devel-app
+    container_name: stage-app
     domainname: dev.local
     volumes:
       - ./IMathAS:/var/www/html
