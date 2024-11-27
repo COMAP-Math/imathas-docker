@@ -1,4 +1,4 @@
-# course.comap.org.conf
+# localhost.conf
 
 <VirtualHost *:80>
   ServerName localhost
