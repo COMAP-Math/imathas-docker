@@ -15,6 +15,7 @@ services:
     domainname: comap.org
     restart: "no"
     volumes:
+      - ./IMathAS:/var/www/html
       - ./.devcontainer/letsencrypt:/etc/letsencrypt
       - ./.devcontainer/letsencrypt/logs:/var/log/letsencrypt
     networks:
