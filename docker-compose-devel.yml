@@ -1,7 +1,7 @@
 ---
 services:
   mysql:
-    container_name: devel-mysql
+    container_name: devel-mysql-imathas
     hostname: mysql
     domainname: local
     volumes:
@@ -11,7 +11,7 @@ services:
       - imathas
 
   certbot:
-    container_name: devel-certbot
+    container_name: devel-certbot-imathas
     command: /bin/true
     entrypoint: ["/bin/true"]
     restart: "no"
@@ -22,12 +22,16 @@ services:
       - imathas
 
   app:
-    container_name: devel-app
+    container_name: devel-app-imathas
     hostname: devcontainer
     domainname: local
     volumes:
       - ./IMathAS:/var/www/html
       - ./.devcontainer/letsencrypt:/etc/letsencrypt
       - ./.devcontainer/letsencrypt/logs:/var/log/letsencrypt
+    ports:
+      - "443:443"
+      - "80:80"
+      - "8080:8080"
     networks:
       - imathas

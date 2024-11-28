@@ -39,7 +39,7 @@ COPY ./docker/app/*.template $APACHE_CONFDIR/sites-available/
 COPY ./docker/app/start-apache.sh /usr/local/bin/start-apache.sh
 
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini \
-    && a2dissite 000-default \
+    && a2dissite 000-default default-ssl \
     && a2enmod rewrite ssl \
     && chmod +x /usr/local/bin/start-apache.sh
 

@@ -35,19 +35,6 @@ ssl() {
     fi
 }
 
-development() {
-    ssl
-
-    echo "==> Develop: Checking for judging-portal.${DOMAIN}/fullchain.pem"
-    if [ ! -f "${LETSENCRYPT_DIR}/judging-portal.${DOMAIN}/fullchain.pem" ]; then
-        echo "==> No SSL certificate, enabling HTTP only"
-        envsubst < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf
-    else
-        echo "==> SSL certificate found, enabling HTTPS"
-        envsubst < /etc/nginx/default-ssl.conf.template > /etc/nginx/conf.d/default.conf
-    fi
-}
-
 staging() {
     ssl
 
@@ -68,7 +55,7 @@ staging() {
     fi
 
     envsubst < $TEMPLATE > $CONF
-    a2ensite ${FILENAME%.conf}
+    a2ensite ${CONF}
 }
 
 production() {
@@ -85,7 +72,7 @@ production() {
     fi
 }
 
-locallhost() {
+localhost() {
     echo "==> locallhost: Enabling HTTP only"
     envsubst < ${APACHE_CONFDIR}/sites-available/localhost.conf.template > ${APACHE_CONFDIR}/sites-available/localhost.conf
     a2ensite localhost
@@ -125,7 +112,7 @@ case $APACHE_SERVER_NAME in
         ;;
     "localhost")
         echo "==> localhost environment"
-        locallhost
+        localhost
         ;;
     *)
         echo "==> Error: $APACHE_SERVER_NAME is not a valid environment! Aborting."
