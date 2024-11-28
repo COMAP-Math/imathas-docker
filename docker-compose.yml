@@ -89,8 +89,8 @@ services:
       - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
     volumes:
       - /opt/docker/imathas/IMathAS:/var/www/html
-      - /opt/docker/imathas/letsencrypt:/etc/letsencrypt
-      - /opt/docker/imathas/letsencrypt/logs:/var/log/letsencrypt
+#      - /opt/docker/imathas/letsencrypt:/etc/letsencrypt
+#      - /opt/docker/imathas/letsencrypt/logs:/var/log/letsencrypt
     networks:
       - imathas
 

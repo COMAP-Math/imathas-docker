@@ -3,7 +3,7 @@
 set -e
 
 AVAIL_DIR=${APACHE_CONFDIR}/sites-available
-LETSENCRYPT_DIR=/etc/letsencrypt
+LETSENCRYPT_DIR=/etc/letsencrypt/live
 SSL_DIR=/etc/letsencrypt
 
 ssl() {
@@ -42,17 +42,17 @@ staging() {
     HTTP_CONF=http.conf
     HTTPS_CONF=https.conf
 
-    echo "==> Staging: Checking for ${CERTBOT_DOMAIN}/fullchain.pem"
-    if [ ! -f "${LETSENCRYPT_DIR}/${CERT_DOMAIN}/fullchain.pem" ]; then
+    echo "==> Staging: Checking for ${LETSENCRYPT_DIR}/${CERTBOT_DOMAIN}/fullchain.pem"
+    if [ ! -f "${LETSENCRYPT_DIR}/${CERTBOT_DOMAIN}/fullchain.pem" ]; then
         TEMPLATE=${AVAIL_DIR}/${HTTP_CONF}.template
         CONF=${AVAIL_DIR}/${HTTP_CONF}
         echo "==> No SSL certificate, enabling HTTP only"
-        a2dissite $(HTTPS_CONF)
+        a2dissite ${HTTPS_CONF} > /dev/null 2>&1 | true
     else
         TEMPLATE=${AVAIL_DIR}/${HTTPS_CONF}.template
         CONF=${AVAIL_DIR}/${HTTPS_CONF}
         echo "==> SSL certificate found, enabling HTTPS"
-        a2dissite $(HTTP_CONF)
+        a2dissite ${HTTP_CONF} > /dev/null 2>&1 | true
     fi
 
     echo "==> ${TEMPLATE} -> ${CONF}"
