@@ -2,6 +2,7 @@
 
 set -e
 
+AVAIL_DIR=${APACHE_CONFDIR}/sites-available
 LETSENCRYPT_DIR=/etc/letsencrypt
 SSL_DIR=/etc/letsencrypt
 
@@ -31,14 +32,12 @@ ssl() {
     echo "==> Checking for dhparams.pem"
     if [ ! -f "${SSL_DIR}/ssl-dhparams.pem" ]; then
         echo "==> Generating dhparams.pem"
-        openssl dhparam -out ${SSL_DIR}/sl-dhparams.pem 2048
+        openssl dhparam -out ${SSL_DIR}/ssl-dhparams.pem 2048
     fi
 }
 
 staging() {
     ssl
-
-    AVAIL_DIR=${APACHE_CONFDIR}/sites-available
 
     HTTP_CONF=http.conf
     HTTPS_CONF=https.conf
@@ -56,7 +55,8 @@ staging() {
 
     echo "==> ${TEMPLATE} -> ${CONF}"
     envsubst < ${TEMPLATE} > ${CONF}
-    a2ensite ${CONF}
+    FILENAME=$(basename "$CONF")
+    a2ensite ${FILENAME}
 }
 
 production() {
