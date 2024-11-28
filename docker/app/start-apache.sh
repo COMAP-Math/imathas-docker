@@ -54,7 +54,8 @@ staging() {
         echo "==> SSL certificate found, enabling HTTPS"
     fi
 
-    envsubst < $TEMPLATE > $CONF
+    echo "==> ${TEMPLATE} -> ${CONF}"
+    envsubst < ${TEMPLATE} > ${CONF}
     a2ensite ${CONF}
 }
 
