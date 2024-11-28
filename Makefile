@@ -48,6 +48,8 @@ run-staging:
 	$(eval $(call DOCKER_COMPOSE_ENV,$(DOCKER_COMPOSE_STAGE)))
 	$(DOCKER_STOP)
 	$(DOCKER_UP)
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_STAGE) run --rm certbot /usr/local/bin/certify-init.sh
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_STAGE) restart app
 	$(DOCKER_RM)
 	$(DOCKER_IMAGE_PRUNE)
 
