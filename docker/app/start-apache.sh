@@ -47,10 +47,12 @@ staging() {
         TEMPLATE=${AVAIL_DIR}/${HTTP_CONF}.template
         CONF=${AVAIL_DIR}/${HTTP_CONF}
         echo "==> No SSL certificate, enabling HTTP only"
+        a2dissite $(HTTPS_CONF)
     else
-        TEMPLATE=${AVAIL_DIR}/${HTTP_CONF}.template
-        CONF=${AVAIL_DIR}/${HTTP_CONF}
+        TEMPLATE=${AVAIL_DIR}/${HTTPS_CONF}.template
+        CONF=${AVAIL_DIR}/${HTTPS_CONF}
         echo "==> SSL certificate found, enabling HTTPS"
+        a2dissite $(HTTP_CONF)
     fi
 
     echo "==> ${TEMPLATE} -> ${CONF}"
