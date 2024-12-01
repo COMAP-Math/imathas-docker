@@ -43,6 +43,11 @@ build-staging:
 	$(eval $(call DOCKER_COMPOSE_ENV,$(DOCKER_COMPOSE_STAGE)))
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_STAGE) build $(BUILD_ARGS)
 
+.PHONY: certbot-staging
+certbot-staging:
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_STAGE) run --rm certbot /usr/local/bin/certify-init.sh
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_STAGE) restart app
+
 .PHONY: run-staging
 run-staging:
 	$(eval $(call DOCKER_COMPOSE_ENV,$(DOCKER_COMPOSE_STAGE)))
