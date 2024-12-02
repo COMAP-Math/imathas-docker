@@ -27,6 +27,7 @@ git config --global http.sslVerify false
 git config --global core.editor "code --wait"
 git config --global --add safe.directory /workspace
 git config --global --add safe.directory /workspace/IMathAS
+git config pull.rebase true
 
 # Customize git user configuration on your branch
 #
