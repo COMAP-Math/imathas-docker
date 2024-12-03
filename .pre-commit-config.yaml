@@ -29,6 +29,7 @@ repos:
     rev: v8.21.2
     hooks:
       - id: gitleaks
+        args: ['--verbose']
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
