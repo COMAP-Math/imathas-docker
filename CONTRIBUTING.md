@@ -1,4 +1,4 @@
-# Getting Started
+# Getting Started v0.30
 
 <details>
 <summary>Getting Started on Windows (click to expand)</summary>
