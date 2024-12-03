@@ -9,21 +9,38 @@
   * OR Older ScreenStep [documentation](docs/Docker_Windows/docker_installation_on_windows_10_pro_using_wsl_2_backend.md) with step-by-step instructions and screenshots
   * Make sure your Windows Subsystem for Linux (wsl) is v2 (or higher)
   ```
-  > wsl --update
+  wsl --update
   ```
 
 ## Visual Studio Code (vscode)
   * The official documentation for installing Visual Studio Code on [Windows](https://code.visualstudio.com/docs/?dv=win32user)
   * OR Use [chocolatey](https://chocolatey.org/install) to install [vscode](https://community.chocolatey.org/packages/vscode)
+  ```
+  choco install vscode
+  ```
 
 ## Git
   * The official documentation for installing Git on [Windows](https://git-scm.com/download/win)
   * OR Use [chocolatey](https://chocolatey.org/install) to install [git](https://community.chocolatey.org/packages/git)
+  ```
+  choco install git.install --params "'/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf'"
+  ```
+  * NOTE: If git is already installed you need to put "C:\Program Files\Git\bin" first on your PATH. Here is a [script](docks/scripts/Git-Bash.ps1) to help you.
+
+## GNU Make
+  * Can download the [Setup](https://gnuwin32.sourceforge.net/downlinks/make.php) from [SourceForge](https://gnuwin32.sourceforge.net/packages/make.htm)
+  * OR Use [chocolatey](https://chocolatey.org/install) to install [GNU Make](https://community.chocolatey.org/packages/make)
+  ```
+  choco install make
+  ```
 
 ## WinSCP
   * The official documentation for installing WinSCP on [Windows](https://winscp.net/eng/docs/guide_install)
   * OR Use [chocolatey](https://chocolatey.org/install) to install [winscp](https://community.chocolatey.org/packages/winscp)
   * [Register](https://winscp.net/eng/docs/integration_url#registering) WinSCP to handle sftp:// URL addresses
+  ```
+  choco install winscp
+  ```
 
 Go to [Clone the project source code](#clone)
 </details>
@@ -140,7 +157,12 @@ Current default time zone: 'America/New_York'
 Local time is now:      Mon Dec  2 17:41:56 EST 2024.
 Universal Time is now:  Mon Dec  2 22:41:56 UTC 2024.
 ```
-## Browsing IMathAS
+## IMathAS
+* Run IMathAS application
+```
+cd imathas-docker
+make run-devel
+```
 * Open your favorite browser, navigate to
 ```
 http://localhost
