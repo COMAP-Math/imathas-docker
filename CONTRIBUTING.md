@@ -1,4 +1,4 @@
-# Getting Started v0.30
+# Getting Started v0.31
 
 <details>
 <summary>Getting Started on Windows (click to expand)</summary>
@@ -25,7 +25,8 @@
   ```
   choco install git.install --params "'/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf'"
   ```
-  * NOTE: If git is already installed you need to put "C:\Program Files\Git\bin" first on your PATH. Here is a [script](docks/scripts/Git-Bash.ps1) to help you.
+  * NOTE: 2024-Dec-04 This may not matter anymore, finish the install/configuration and see if things work as expected
+  * NOTE: If git is already installed you need to put "C:\Program Files\Git\bin" first on your PATH. Here is a [script](docs/scripts/Git-Bash.ps1) to help you.
 
 ## GNU Make
   * Can download the [Setup](https://gnuwin32.sourceforge.net/downlinks/make.php) from [SourceForge](https://gnuwin32.sourceforge.net/packages/make.htm)
@@ -90,19 +91,19 @@ Go to [Clone the judging portal source code](#clone)
   > git checkout master
   ```
 
-## Clone the COMAP fork of the IMathAS source code
+## Clone the fork specific to COMAP of the IMathAS source code
   * Change directory into the imathas-docker project
   ```
   > cd imathas-docker
   ```
-  * Clone the COMAP fork of the [IMathAS](https://github.com/COMAP-Math/IMathAS) project from [GitHub](https://github.com/)
+  * Clone the fork of the [IMathAS](https://github.com/COMAP-Math/IMathAS) project from [GitHub](https://github.com/)
   ```
   > git clone https://github.com/COMAP-Math/IMathAS
   Cloning into 'IMathAS'...
   ```
 
 ## Customize the development environment
-  * Download the latest [.env](docs/examples/env.example) template and rename it and save it to the project directory
+  * Download the latest [.env](docs/examples/env.example) example and rename it to .env and save it to the project directory
   ```
   /path/to/imathas-docker/.env
   ```
