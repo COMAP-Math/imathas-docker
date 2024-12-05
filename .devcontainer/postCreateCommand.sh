@@ -38,3 +38,5 @@ git config --global user.name "${GIT_USER_NAME}"
 # Timezone setup
 #
 timezone_setup
+
+chown -R www-data:www-data /workspace/IMathAS
