@@ -39,4 +39,4 @@ git config --global user.name "${GIT_USER_NAME}"
 #
 timezone_setup
 
-chown -R www-data:www-data /workspace/IMathAS
+chown -R www-data:www-data /workspace/IMathAS > /dev/null 2>&1 || true
