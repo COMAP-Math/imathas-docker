@@ -72,6 +72,8 @@
 /site
 ENV/
 IMathAS
+IMathAS.old
+IMathAS.old/
 IMathAS/
 MANIFEST
 Thumbs.db

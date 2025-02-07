@@ -1,0 +1,74 @@
+name: Docker Build and Deploy (Multi-Platform)
+
+on:
+  push:
+    branches:
+      - main  # Trigger this workflow on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger this workflow on pull requests targeting the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Docker Buildx (this allows using advanced Docker features like multi-platform builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Cache Docker layers to speed up future builds
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      # Step 4: Set environment variables from GitHub Secrets
+      - name: Set environment variables from Secrets
+        run: |
+          echo "APACHE_SERVER_NAME=${{ secrets.APACHE_SERVER_NAME }}" >> $GITHUB_ENV
+          echo "TZ=${{ secrets.TZ }}" >> $GITHUB_ENV
+          echo "APACHE_SERVER_ADMIN=${{ secrets.APACHE_SERVER_ADMIN }}" >> $GITHUB_ENV
+
+      # Step 5: Build Docker images for Development, Staging, and Production for both AMD64 and ARM64 platforms
+      - name: Build Docker images for Development, Staging, and Production
+        run: |
+          # Build for AMD64 and ARM64 platforms
+          make build-devel
+          make build-staging
+          make build-production
+
+      # Step 6: Optionally, you can deploy the images or run additional commands here
+      # For example, push Docker images to Docker Hub or a container registry
+      # - name: Push Docker image
+      #   run: |
+      #     docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #     docker tag your-image your-docker-repo/your-image:latest
+      #     docker push your-docker-repo/your-image:latest
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Step 1: Checkout code again
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set environment variables again
+      - name: Set environment variables from Secrets
+        run: |
+          echo "APACHE_SERVER_NAME=${{ secrets.APACHE_SERVER_NAME }}" >> $GITHUB_ENV
+          echo "TZ=${{ secrets.TZ }}" >> $GITHUB_ENV
+          echo "APACHE_SERVER_ADMIN=${{ secrets.APACHE_SERVER_ADMIN }}" >> $GITHUB_ENV
+
+      # Step 3: Run the production deployment (e.g., ssl-production and run-production)
+      - name: Deploy Production Environment
+        run: |
+          make production

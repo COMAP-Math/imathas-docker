@@ -4,6 +4,8 @@ services:
     container_name: devel-mysql-imathas
     hostname: mysql
     domainname: local
+    ports:
+      - "3306:3306"
     volumes:
       - ./.devcontainer//mysql-data:/var/lib/mysql
       - ./.devcontainer/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro

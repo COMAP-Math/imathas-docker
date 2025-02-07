@@ -103,7 +103,8 @@ Go to [Clone the judging portal source code](#clone)
   ```
 
 ## Customize the development environment
-  * Download the latest [.env](docs/examples/env.example) example and rename it to .env and save it to the project directory
+  * Download the latest [.env](docs/examples/env.example) example and rename it to .env and save it to the project directory.
+  * If you use Notepad or Wordpad, save the file with Unix end of line characters (LF)
   ```
   /path/to/imathas-docker/.env
   ```
@@ -168,5 +169,7 @@ make run-devel
 ```
 http://localhost
 ```
-First run, you will need to configure the database connection and apply
+* First run, you will need to configure the database connection and apply
 any customizations.
+* Make sure you do not have a web proxy set or your wpad.dat allow pass
+through for localhost!
